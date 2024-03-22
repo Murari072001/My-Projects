@@ -1,0 +1,2 @@
+let todos=[{"title":"Buy Car","status":false},{"title":"Backend Class","status":true},{"title":"Shopping","status":false},{"title":"Cinema","status":true},{"title":"Murari","status":false},{"title":"Ram raj","status":false},{"title":"Krish","status":false},{"title":"Balayya","status":false},{"title":"Chiru","status":false},{"title":"asfdsgsg","status":false}]
+ module.exports={todos}
