@@ -26,10 +26,10 @@ function Header() {
                         <ul className="navbar-nav">
                             {
                                 user.isLoggedIn && <><li className="nav-item">
-                                    <b onClick={logoutUser} className="nav-link">Logout</b>
+                                    <button onClick={logoutUser} className="nav-link">Logout</button>
                                 </li>
                                     <li className="nav-item">
-                                    <button className='btn text-dark'><Link to={user.userDetails.role==="admin"?"/adminDashboard":"/userDashboard"}>Dasboard</Link></button>
+                                        <Link className="nav-link" to={user.userDetails.role === "admin" ? "/adminDashboard" : "/userDashboard"}>Dasboard</Link>
                                     </li>
                                 </>
                             }

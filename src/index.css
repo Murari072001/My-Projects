@@ -1,0 +1,24 @@
+.dashboard .card{
+    width: 20%;
+    padding: 1rem;
+    border: 2px solid ;
+}
+.form-floating{
+    margin: 0.7rem;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.error{
+    color:red;
+    text-align: center;
+}
+.allLoans{
+    gap: 1;
+}
+.AD:hover{
+    cursor:pointer;
+}
+#loanDetails td{
+    border:0.1rem solid
+}

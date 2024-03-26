@@ -29,10 +29,19 @@ export const jsonApi = createApi({
           body:newregistration
         }
       }
+    }),
+    allLoans:builder.query({
+      query:()=>`allLoans`
+    }),
+    LoanDetails:builder.query({
+      query:(id)=>`loan/${id}`
+    }),
+    sendOTP:builder.query({
+      query:(mail)=>`otp/${mail}`
     })
   }),
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useAdRegistrationMutation,useLazyCheckUserQuery,useAddLoanMutation,useGetAllCampaingsQuery } = jsonApi
+export const { useAdRegistrationMutation,useLazySendOTPQuery,useLoanDetailsQuery,useAllLoansQuery,useLazyCheckUserQuery,useAddLoanMutation,useGetAllCampaingsQuery } = jsonApi
