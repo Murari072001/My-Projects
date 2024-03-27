@@ -11,7 +11,6 @@ router.get("/:email",(req,res) => {
       pass: 'cgar audq qbqa azvl'
     }
   });
-  // console.log(req.params);
   var mailOptions = {
     from: 'murari.t2001@gmail.com',
     to: req.params.email,
@@ -22,11 +21,12 @@ router.get("/:email",(req,res) => {
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
+      res.json("Error")
     } else {
       console.log('Email sent: ' + info.response);
+      res.json({sent:'Email sent: ' + info.response,OTP:otp})
     }
   });
-  res.json("Mail Sent Successfully")
 })
 
 module.exports=router;

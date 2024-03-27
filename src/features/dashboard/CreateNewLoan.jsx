@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import * as Yup from 'yup';
 import { useFormik } from 'formik'
-import { useAddLoanMutation } from '../../services/jsonApi';
+import { useAddLoanMutation, useLazySendOTPQuery } from '../../services/jsonApi';
 import { useNavigate } from 'react-router-dom';
 
 function CreateNewLoan() {
     const [createLoan] = useAddLoanMutation()
+    const [otpfn]=useLazySendOTPQuery()
+    let [OTP,setOTP]=useState('')
     const navigate = useNavigate()
     var createCampaignForm = useFormik({
         initialValues: {
@@ -27,6 +29,7 @@ function CreateNewLoan() {
             emiPaid: [],
             description: '',
             imgUrl: '',
+            password:'',
             date: (new Date()).getTime()
         },
         validationSchema: Yup.object({
@@ -42,6 +45,7 @@ function CreateNewLoan() {
             price: Yup.number().required("*This field is Required"),
             loanAmount: Yup.number().required("*This field is Required"),
             tenure: Yup.string().required("*This field is Required"),
+            password:Yup.string().required().matches(OTP,"OTP not Matched"),
             description: Yup.string().required("*This field is Required")
         }),
         onSubmit: (values, {resetForm}) => {
@@ -54,15 +58,15 @@ function CreateNewLoan() {
                 resetForm()
                 navigate('/admindashboard')
             })
-
         }
     })
+    const sendotp=()=>{
+        // otpfn(createCampaignForm.values.email).then((res)=>{setOTP(res.data.OTP)}).catch((err)=>{console.log("err",err);})
+    }
     const calculateEMI = (N) => {
-        console.log("Principle::", createCampaignForm.values.loanAmount);
         setinterest([N, (Math.floor(createCampaignForm.values.loanAmount * (N / 12 / 100) * ((1 + (N / 12 / 100)) ** createCampaignForm.values.tenure) / ((1 + (N / 12 / 100)) ** (createCampaignForm.values.tenure) - 1)))])
     }
     let [interestRate, setinterest] = React.useState([]);
-    // console.log("values", interestRate, createCampaignForm.values);
     useEffect(() => {
         switch (createCampaignForm.values.tenure) {
             case "6": calculateEMI(15)
@@ -96,52 +100,60 @@ function CreateNewLoan() {
                 <form onSubmit={createCampaignForm.handleSubmit}>
                     {createCampaignForm.touched.firstname && <h6 className='error'>{createCampaignForm.errors.firstname}</h6>}
                     <div className='form-floating'>
-                        <input type="text" className='form-control' name='firstname' placeholder='Enter firstname' onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
+                        <input type="text" className='form-control' name='firstname' placeholder='Enter firstname' value={createCampaignForm.values.firstname} onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
                         <label htmlFor="firstname">Enter Firstname</label>
                     </div>
                     {createCampaignForm.touched.lastname && <h6 className='error'>{createCampaignForm.errors.lastname}</h6>}
                     <div className='form-floating'>
-                        <input type="text" className='form-control' name='lastname' placeholder='Enter lastname' onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
+                        <input type="text" className='form-control' name='lastname' placeholder='Enter lastname' value={createCampaignForm.values.lastname} onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
                         <label htmlFor="lastname">Enter Lastname</label>
                     </div>
                     {createCampaignForm.touched.age && <h6 className='error'>{createCampaignForm.errors.age}</h6>}
                     <div className="form-floating">
-                        <input type="number" className='form-control' name='age' placeholder='Enter Age' onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
+                        <input type="number" className='form-control' name='age' placeholder='Enter Age' value={createCampaignForm.values.age} onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
                         <label htmlFor="age">Enter Age</label>
                     </div>
                     {createCampaignForm.touched.email && <h6 className='error'>{createCampaignForm.errors.email}</h6>}
                     <div className="form-floating">
-                        <input type="email" className='form-control' name='email' placeholder='Enter Email Address' onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
+                        <input type="email" className='form-control' name='email' placeholder='Enter Email Address' value={createCampaignForm.values.email} onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
                         <label htmlFor="email">Enter Email Address</label>
+                    </div>
+                    <div className="form-floating">
+                         <button className='btn btn-outline-success w-100' onClick={()=>{sendotp()}}>Send OTP</button>
+                    </div>
+                    {createCampaignForm.touched.password && <h6 className='error'>{createCampaignForm.errors.password}</h6>}
+                    <div className="form-floating">
+                        <input type='text' className='form-control' name="password" placeholder='Enter OTP' value={createCampaignForm.values.password} onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur}/>
+                        <label htmlFor="otp">Enter OTP</label>
                     </div>
                     {createCampaignForm.touched.phoneNumber && <h6 className='error'>{createCampaignForm.errors.phoneNumber}</h6>}
                     <div className="form-floating">
-                        <input type="number" className='form-control' name='phoneNumber' placeholder='Enter Phone Number' onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
+                        <input type="number" className='form-control' name='phoneNumber' placeholder='Enter Phone Number' value={createCampaignForm.values.phoneNumber} onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
                         <label htmlFor="phoneNumber">Enter Phone Number</label>
                     </div>
                     {createCampaignForm.touched.aadharNumber && <h6 className='error'>{createCampaignForm.errors.aadharNumber}</h6>}
                     <div className="form-floating">
-                        <input type="number" className='form-control' name='aadharNumber' placeholder='Enter Aadhar Number' onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
+                        <input type="number" className='form-control' name='aadharNumber' placeholder='Enter Aadhar Number' value={createCampaignForm.values.aadharNumber} onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
                         <label htmlFor="aadharNumber">Enter Aadhar Number</label>
                     </div>
                     {createCampaignForm.touched.accountNumber && <h6 className='error'>{createCampaignForm.errors.accountNumber}</h6>}
                     <div className="form-floating">
-                        <input type="number" className='form-control' name='accountNumber' placeholder='Enter Account Number' onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
+                        <input type="number" className='form-control' name='accountNumber' placeholder='Enter Account Number' value={createCampaignForm.values.accountNumber} onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
                         <label htmlFor="accountNumber">Enter Account Number</label>
                     </div>
                     {createCampaignForm.touched.loanType && <h6 className='error'>{createCampaignForm.errors.loanType}</h6>}
                     <div className="form-floating">
-                        <input type="text" className='form-control' name='loanType' placeholder='Enter Loan Type' onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
+                        <input type="text" className='form-control' name='loanType' placeholder='Enter Loan Type' value={createCampaignForm.values.loanType} onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
                         <label htmlFor="loanType">Enter Loan Type</label>
                     </div>
                     {createCampaignForm.touched.weight && <h6 className='error'>{createCampaignForm.errors.weight}</h6>}
                     <div className="form-floating">
-                        <input type="number" className='form-control' step="any" name='weight' placeholder='Enter Weight in Grams' onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
+                        <input type="number" className='form-control' step="any" name='weight' placeholder='Enter Weight in Grams' value={createCampaignForm.values.weight} onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
                         <label htmlFor="weight">Enter Weight in Grams</label>
                     </div>
                     {createCampaignForm.touched.price && <h6 className='error'>{createCampaignForm.errors.price}</h6>}
                     <div className="form-floating">
-                        <input type="number" className='form-control' step="any" name='price' placeholder="Enter Today's Price in Grams" onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
+                        <input type="number" className='form-control' step="any" name='price' placeholder="Enter Today's Price in Grams" value={createCampaignForm.values.price} onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
                         <label htmlFor="price">Enter Today's Price in Grams</label>
                     </div>
                     <div className="form-floating">
@@ -150,12 +162,12 @@ function CreateNewLoan() {
                     </div>
                     {createCampaignForm.touched.loanAmount && <h6 className='error'>{createCampaignForm.errors.loanAmount}</h6>}
                     <div className="form-floating">
-                        <input type="number" className='form-control' step="any" name='loanAmount' placeholder='Enter Loan Amount' onKeyUp={() => { calculateEMI(createCampaignForm.values.tenure) }} onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
+                        <input type="number" className='form-control' step="any" name='loanAmount' placeholder='Enter Loan Amount' onKeyUp={() => { calculateEMI(createCampaignForm.values.tenure) }} value={createCampaignForm.values.loanAmount} onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur} />
                         <label htmlFor="loanAmount">Enter Loan Amount</label>
                     </div>
                     {createCampaignForm.touched.tenure && <h6 className='error'>{createCampaignForm.errors.tenure}</h6>}
                     <div className="form-floating">
-                        <select className='form-control' name="tenure" id="tenure" onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur}>
+                        <select className='form-control' name="tenure" id="tenure" value={createCampaignForm.values.tenure} onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur}>
                             <option selected disabled>-- Please Select Tenure --</option>
                             <option value={6}>6 Months</option>
                             <option value={8}>8 Months</option>
@@ -180,7 +192,7 @@ function CreateNewLoan() {
                     </div>
                     {createCampaignForm.touched.description && <h6 className='error'>{createCampaignForm.errors.description}</h6>}
                     <div className="form-floating">
-                        <textarea className='form-control' name="description" cols="30" rows="2" placeholder='Enter Description' onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur}></textarea>
+                        <textarea className='form-control' name="description" cols="30" rows="2" placeholder='Enter Description' value={createCampaignForm.values.description} onChange={createCampaignForm.handleChange} onBlur={createCampaignForm.handleBlur}></textarea>
                         <label htmlFor="description">Enter Description</label>
                     </div>
                     <div className="form-floating">

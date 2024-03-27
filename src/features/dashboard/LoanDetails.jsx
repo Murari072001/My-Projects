@@ -43,6 +43,10 @@ const LoaDetails = () => {
                             <td>{data.aadharNumber}</td>
                         </tr>
                         <tr>
+                            <td>Mail ID</td>
+                            <td>{data.email}</td>
+                        </tr>
+                        <tr>
                             <td>Loan Issued On</td>
                             <td>{checkDate(data.date)}</td>
                         </tr>
@@ -75,15 +79,15 @@ const LoaDetails = () => {
                             <td><table className="table table-secondary table-striped table-hover">
                                         <thead>
                                             <tr>
-                                                <th className="border border-dark">EMI Amount</th>
                                                 <th className="border border-dark">Paid On Date</th>
+                                                <th className="border border-dark">EMI Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                     {data.emiPaid.map((emi)=>{ 
                                         return <tr>
                                             <td className="border border-dark">{checkDate(emi.paidOn)}</td>
-                                            <td className="border border-dark">{emi.emiAmount}</td>
+                                            <td className="border border-dark">₹{emi.emiAmount}</td>
                                             </tr>
                                         })
                                     }</tbody>
