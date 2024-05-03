@@ -1,0 +1,88 @@
+hr{
+    border-bottom: 0.01rem solid whitesmoke;
+}
+#home h1{
+    font-size: 3rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight:500;
+    margin: -5px 0px;
+}
+#home{
+    background-image: url();
+}
+.edu{
+    width: 30%;
+    flex-grow: 1;
+    margin: 0.2rem;
+}
+#edudet{
+    display: flex;
+    /* flex: auto; */
+    justify-content: space-around;
+    padding: 1rem;
+} 
+.mob{
+    display: none;
+}
+.pro img{
+    height: 17rem;
+    width: 17rem;
+    border-radius: 10%;
+}
+.pro{
+    position: relative;
+    /* border: 2px solid black; */
+    border-radius: 10%;
+    margin: 0.9rem;
+    /* flex-grow: 1; */
+}
+.pro:hover .protitle{
+    display: block;
+    transition: 2s;
+}
+.protitle{
+    position: absolute;
+    top: 0;
+    display: none;
+}
+#projects{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:space-between;
+}
+#myabout{
+    text-align: justify;
+}
+.contact-icons{
+    display: flex;
+    justify-content: space-between;
+}
+.contact-icons li{
+    text-decoration: none;
+    list-style: none;
+    border-radius: 50%;
+    /* border: 2px solid #0ef; */
+
+}
+.bi{
+    font-size: 2rem;
+    color: #0ef;
+    margin: 0px;
+    border: 2px solid #0ef;
+    border-radius: 50%;
+    padding: 0.5rem;
+}
+.bi:hover{
+    color: black;
+    background-color: #0ef;
+}
+@media(max-width:750px)  {
+    #edudet{
+        display: none;
+    }
+    .mob{
+        display: block;
+        display: flex;
+    }
+    
+}
