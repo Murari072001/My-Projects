@@ -13,8 +13,8 @@ const Login = () => {
     const [checkuser] = useCheckuserMutation()
     useEffect(()=>{
         checkLogin().then((res)=>{
-            dispatch(setLogin(res.data.Login))
-            res.data.Login?navigate("/dashboard"):navigate("/login")
+            dispatch(setLogin(res.data?.Login))
+            res.data?.Login?navigate("/dashboard"):navigate("/login")
         })
     },[])
     const LoginForm = useFormik({
