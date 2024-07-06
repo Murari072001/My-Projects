@@ -52,7 +52,7 @@ setInterval(() => {
 }, 1000)
 
 function checkLogin(req, res, next) {
-    console.log("called");
+    console.log("called",req.cookies);
     if (req.cookies.token) {
         let verify = jwt.verify(req.cookies.token, "security-token")
         let user = users.filter((ele) => ele.username === verify.username && ele.password === verify.password)
