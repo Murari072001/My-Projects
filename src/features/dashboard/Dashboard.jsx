@@ -1,41 +1,38 @@
-import React, { useEffect } from 'react'
-import CustomerDashboard from './CustomerDashboard'
-import ManagerDashboard from './ManagerDashboard'
-import EmployeeDashboard from './EmployeeDashboard'
-import {  useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate, Outlet } from 'react-router-dom';
+import ProfileSection from '../user/ProfileSection';
 
-function Dashboard(){
-    // console.log(userDetails)
-    var {isLoggedin}=useSelector((state)=>{return state.loginReducer})
-    // console.log(isLoggedin)
-    // dispatch=useDispatch()
-    var navigate = useNavigate()
-    
-    useEffect(()=>{
-        if(!isLoggedin){
-            // console.log(isLoggedin)
-            navigate("/login")
+function Dashboard() {
+    const { isLoggedin } = useSelector((state) => state.loginReducer);
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        if (!isLoggedin) {
+            navigate("/login");
+        } else {
+            const userData = window.localStorage.getItem("user");
+            if (userData) {
+                setUser(JSON.parse(userData)[0]);
+            } else {
+                navigate("/login");
+            }
         }
-    },[isLoggedin,navigate])
+    }, [isLoggedin, navigate]);
 
-    if(JSON.parse(window.localStorage.getItem("user")))
+    if (!user) return null;
 
-    var {role} = JSON.parse(window.localStorage.getItem("user"))[0]
-    // console.log(isLoggedin);
     return (
-        <div className='container'>
-            {/* <h2>Dashboard of {role}</h2> */}
-            {
-                role==="customer" && <CustomerDashboard></CustomerDashboard>
-            }
-            {
-                role==="manager"&& <ManagerDashboard></ManagerDashboard>
-            }
-            {
-                role==="employee" && <EmployeeDashboard></EmployeeDashboard>
-            }
+        <div className="dashboard-grid">
+            <div className="dashboard-sidebar">
+                <ProfileSection user={user} />
+            </div>
+            <div className="dashboard-main glass-card animate-fade-in" style={{ padding: '2rem' }}>
+                <Outlet context={{ user }} />
+            </div>
         </div>
-    )
+    );
 }
-export default Dashboard
+
+export default Dashboard;

@@ -22,10 +22,24 @@ export const userApi = createApi({
     getAllCustomerUsers:builder.query({
         query:()=>`?role=customer`
     }),
-
+    getAllUsers: builder.query({
+        query: () => `/`
+    }),
+    getUserById: builder.query({
+        query: (id) => `/${id}`
+    }),
   }),
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useAuthenticateQuery,useLazyAuthenticateQuery,useGetAllEmployeesQuery,useLazyGetAllEmployeesQuery,useAddCustomersMutation,useGetAllCustomerUsersQuery} = userApi
+export const { 
+    useAuthenticateQuery,
+    useLazyAuthenticateQuery,
+    useGetAllEmployeesQuery,
+    useLazyGetAllEmployeesQuery,
+    useAddCustomersMutation,
+    useGetAllCustomerUsersQuery,
+    useGetAllUsersQuery,
+    useGetUserByIdQuery
+} = userApi

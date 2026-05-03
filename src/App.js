@@ -2,19 +2,20 @@ import './App.css';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 import { Outlet } from 'react-router-dom';
-import Navbar from './shared/Navbar';
+import Header from './shared/Header';
+
 function App() {
   return (
-    <div >
+    <div>
       <Provider store={store}>
-        <div className="">
-          {/* <h1>Ticketing... App...</h1> */}
-          <Navbar></Navbar>
-          <Outlet></Outlet>
+        <div>
+          <Header />
+          <main className="container" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
+            <Outlet />
+          </main>
         </div>
-    </Provider>  
+      </Provider>  
     </div>
-    
   );
 }
 export default App;

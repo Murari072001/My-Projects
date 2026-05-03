@@ -1,24 +1,37 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { Outlet } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import StatsCard from "../../shared/StatsCard";
+import ListTickets from "./ListTickets";
 
-function CustomerDashboard(){
-    var navigate=useNavigate()
-    var {username} = JSON.parse(window.localStorage.getItem("user"))[0]
+function CustomerDashboard({ user }) {
+    const navigate = useNavigate();
+    const { username } = user;
+    
     return (
         <div>
-            <h3>{username.toUpperCase()} CustomerDashboard</h3>
-            <div style={{marginLeft:"20%",border:"1px solid",width:"750px",padding:"10px",marginTop:"100px",height:"100%"}}>
-                <span style={{fontSize:"25px",fontWeight:"5px",marginLeft:"140px"}}>Customer DashBoard</span><br/>
-                <div style={{marginLeft:"150px",marginTop:"10px"}}>
-                    <Link>List of Tickets</Link>&nbsp;&nbsp;&nbsp;
-                    <button onClick={()=>{navigate("addTicket")}}>Raise Ticket</button>
-                </div>
-                <Outlet></Outlet>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>
+                    Customer Dashboard
+                </h3>
+                <button className="btn-primary-custom" onClick={() => navigate("/dashboard/addTicket")}>
+                    + Raise Ticket
+                </button>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+                <StatsCard title="My Tickets" value="Total" icon="🎫" color="var(--accent-primary)" />
+                <StatsCard title="Action Required" value="Review" icon="⏳" color="var(--accent-warning)" delay={100} />
+            </div>
+
+            <div style={{ borderBottom: '1px solid var(--border-color)', marginBottom: '1.5rem', paddingBottom: '0.5rem' }}>
+                <span style={{ marginRight: '1rem', fontWeight: '500', color: 'var(--accent-primary)' }}>List of Tickets</span>
+            </div>
+
+            <div className="animate-fade-in" style={{ animationDelay: '200ms' }}>
+                <ListTickets />
             </div>
         </div>
-        
-    )
+    );
 }
-export default CustomerDashboard
+
+export default CustomerDashboard;

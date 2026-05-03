@@ -1,42 +1,90 @@
-import React from 'react'
-import { useAddCustomersMutation } from '../../services/userApi'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useAddCustomersMutation } from '../../Services/userApi';
+import { useNavigate } from 'react-router-dom';
 
-function AddBook(){
-    var [newCustomer,setNewCustomer]=React.useState({username:"",password:"",role:""})
-    // var [addNewBook] = useAddBookMutation()
-    // var [refetchBook] = use()
-    // console.log(x)
-    var navigate=useNavigate()
-    var [customer]=useAddCustomersMutation()
-    function addBook(){
-        // addNewBook(newBook).then(()=>{
-        //     refetchBook()
-        // })
-        customer(newCustomer) 
-        navigate("/login")
-    }
+function SignUp() {
+    const [newCustomer, setNewCustomer] = useState({ username: "", password: "", role: "" });
+    const navigate = useNavigate();
+    const [customer] = useAddCustomersMutation();
+
+    const signUp = (e) => {
+        e.preventDefault();
+        customer(newCustomer).then(() => {
+            navigate("/login");
+        });
+    };
     
     return (
-        <div style={{marginTop:"10%",marginLeft:"40%",border:"2px solid",marginRight:"45%",padding:"25px",width:"250px",borderRadius:"16px"}}>
-            <h3 className="text-center">SIGNUP</h3>
-            <form onSubmit={()=>{addBook()}}>
-                <label for="username" className="my-1">Username:</label><br/>
-                <input type="text" placeholder='enter username' id="username" onKeyUp={(e)=>{setNewCustomer({...newCustomer,username:e.target.value})}} required style={{borderRadius:"5px"}}/><br/>
-                <label for="password" className="my-1">Password:</label>
-                <input type="text" placeholder='enter password' id="password" onKeyUp={(e)=>{setNewCustomer({...newCustomer,password:e.target.value})}} required style={{borderRadius:"5px"}}/><br/>
-                {/* <input type="text" placeholder='enter role' onKeyUp={(e)=>{setNewCustomer({...newCustomer,role:e.target.value})}}/><br/> */}
-                <div style={{marginTop:"15px"}}>
-                    <label for="role">Role:</label>&nbsp;&nbsp;
-                    <select name="" id="for" onChange={(e)=>{setNewCustomer({...newCustomer,role:e.target.value})}} required style={{borderRadius:"5px"}}>
-                        <option value="null" disabled selected >Please Select</option>
-                        <option value="customer" >customer</option>
-                        <option value="employee" >employee</option>
-                    </select>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
+            <div className="glass-card animate-fade-in" style={{ width: '100%', maxWidth: '400px' }}>
+                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                    <div style={{
+                        width: '60px', height: '60px', borderRadius: '16px',
+                        background: 'linear-gradient(135deg, var(--accent-secondary), var(--accent-primary))',
+                        display: 'flex', justifyContent: 'center', alignItems: 'center',
+                        color: 'white', fontWeight: 'bold', fontSize: '1.5rem',
+                        margin: '0 auto 1rem auto',
+                        boxShadow: 'var(--shadow-glow)'
+                    }}>
+                        ✨
+                    </div>
+                    <h2 style={{ margin: 0, color: 'var(--text-primary)' }}>Create Account</h2>
+                    <p style={{ margin: '0.5rem 0 0 0', color: 'var(--text-secondary)' }}>Join the Issue Tracker platform</p>
                 </div>
-                <button type="submit" style={{marginLeft:"35px",borderRadius:"10px",marginTop:"15px"}} className="btn btn-primary">Add NewUser</button>
-            </form>
+
+                <form onSubmit={signUp}>
+                    <div style={{ marginBottom: '1.5rem' }}>
+                        <label htmlFor="username" style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: '500' }}>Username</label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            className="input-custom" 
+                            placeholder="Choose a username" 
+                            onChange={(e) => setNewCustomer({ ...newCustomer, username: e.target.value })} 
+                            required 
+                        />
+                    </div>
+
+                    <div style={{ marginBottom: '1.5rem' }}>
+                        <label htmlFor="password" style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: '500' }}>Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            className="input-custom" 
+                            placeholder="Create a password" 
+                            onChange={(e) => setNewCustomer({ ...newCustomer, password: e.target.value })} 
+                            required 
+                        />
+                    </div>
+
+                    <div style={{ marginBottom: '2rem' }}>
+                        <label htmlFor="role" style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)', fontWeight: '500' }}>Role</label>
+                        <select 
+                            id="role" 
+                            className="input-custom" 
+                            onChange={(e) => setNewCustomer({ ...newCustomer, role: e.target.value })} 
+                            required
+                            defaultValue=""
+                            style={{ cursor: 'pointer' }}
+                        >
+                            <option value="" disabled>Select your role</option>
+                            <option value="customer">Customer</option>
+                            <option value="employee">Employee</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" className="btn-primary-custom" style={{ width: '100%', padding: '0.75rem', fontSize: '1rem' }}>
+                        Sign Up
+                    </button>
+                    
+                    <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+                        <span style={{ color: 'var(--text-muted)' }}>Already have an account? </span>
+                        <span onClick={() => navigate("/login")} style={{ color: 'var(--accent-primary)', cursor: 'pointer', fontWeight: '500' }}>Sign In</span>
+                    </div>
+                </form>
+            </div>
         </div>
-    )
+    );
 }
-export default AddBook;
+
+export default SignUp;

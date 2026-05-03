@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const userFromStorage = window.localStorage.getItem("user");
+const initialIsLoggedin = userFromStorage ? true : false;
+
 const initialState={
-    isLoggedin:false,
+    isLoggedin: initialIsLoggedin,
     searchword:"",
     radio:"",
     checkbox:"",

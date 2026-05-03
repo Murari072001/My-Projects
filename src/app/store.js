@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
-import { userApi } from '../services/userApi'
-import { ticketApi } from '../services/ticketApi'
+import { userApi } from '../Services/userApi'
+import { ticketApi } from '../Services/ticketApi'
 import loginReducer from '../features/user/loginSlice'
 export const store = configureStore({
   reducer: {

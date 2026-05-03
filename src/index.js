@@ -13,6 +13,9 @@ import {
 import AddTicket from './features/dashboard/AddTicket';
 import ListTickets from './features/dashboard/ListTickets';
 import SignUp from './features/user/SignUp.jsx';
+import AllUsers from './features/dashboard/AllUsers';
+import UserDetails from './features/dashboard/UserDetails';
+import RoleRouter from './features/dashboard/RoleRouter';
 
 const router = createBrowserRouter([
   {
@@ -36,16 +39,20 @@ const router = createBrowserRouter([
         element:<Dashboard></Dashboard>,
         children:[
           {
-            path:"/dashboard/addTicket",
+            index: true,
+            element: <RoleRouter></RoleRouter>
+          },
+          {
+            path:"addTicket",
             element:<AddTicket></AddTicket>
           },
           {
-            path:"",
-            element:<ListTickets></ListTickets>
+            path:"users",
+            element:<AllUsers></AllUsers>
           },
           {
-            path:"/dashboard/listTickets",
-            element:<Login></Login>
+            path:"users/:userId",
+            element:<UserDetails></UserDetails>
           }
         ]
       }
